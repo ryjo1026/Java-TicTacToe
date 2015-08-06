@@ -14,13 +14,16 @@ import javax.swing.border.LineBorder;
 
 public class Frame extends JFrame{
 	//Indicates whose turn it is
-	private char turn= 'x';
+	private char turn= 'X';
+	
+	//Indicates weather game is done
+	boolean gameOver= false;
 	
 	//Create cell grid
 	private Cell[][] cells= new Cell[3][3];
 	
 	//Create a status label
-	JLabel jlblStatus= new JLabel("X's turn");
+	JLabel jlblStatus= new JLabel("X's turn", SwingConstants.CENTER);
 	
 
 	
@@ -37,8 +40,9 @@ public class Frame extends JFrame{
 			for(int j=0; j<3; j++)
 				panel.add(cells[i][j]= new Cell());
 		
-		jlblStatus.setPreferredSize(new Dimension(25,25));
-		jlblStatus.setFont(new Font("Arial", 9, 25));
+		jlblStatus.setPreferredSize(new Dimension(50,50));
+		jlblStatus.setFont(new Font("Arial", 9, 50));
+		jlblStatus.setForeground(Color.GREEN);
 		
 		panel.setBorder(new LineBorder(Color.BLACK, 1));
 		
@@ -138,13 +142,22 @@ public class Frame extends JFrame{
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
 			
+			Graphics2D g2= (Graphics2D)(g);
 			
-			if (token=='x'){
-				g.drawLine(10, 10, getWidth()-10, getHeight()-10);
-				g.drawLine(getWidth()-10, 10, 10, getHeight()-10);
+			//Sets new stroke and anti-aliasing for shapes and text
+			g2.setStroke(new BasicStroke(10));
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			
+			if (token=='X'){
+				jlblStatus.setForeground(Color.RED);
+				g2.drawLine(10, 10, getWidth()-10, getHeight()-10);
+				g2.drawLine(getWidth()-10, 10, 10, getHeight()-10);
 			}
-			else if(token=='o')
-				g.drawOval(10, 10, getWidth()-20, getHeight()-20);
+			else if(token=='O'){
+				jlblStatus.setForeground(Color.GREEN);
+				g2.drawOval(10, 10, getWidth()-20, getHeight()-20);
+			}
 		}
 	
 		/**
@@ -155,22 +168,24 @@ public class Frame extends JFrame{
 		private class MyMouseListener extends MouseAdapter{
 			@Override
 			public void mouseReleased(MouseEvent e){
-				//if the cell is empty and game not over
-				if (token==' ' && turn != ' ')
-					setToken(turn);
-				
-				//Check game status
-				if(isWon(turn)){
-					jlblStatus.setText(turn+" won!");
-				}
-				else if(isFull()){
-					jlblStatus.setText("Stalemate");
-				}
-				else{
-					turn=(turn=='x') ? 'o' : 'x';
-					jlblStatus.setText(turn + "'s turn");
-				}
+				if (!gameOver){
+					//if the cell is empty and game not over
+					if (token==' ' && turn != ' ')
+						setToken(turn);
 					
+					//Check game status
+					if(isWon(turn)){
+						jlblStatus.setText(turn +" won!");
+						gameOver=true;
+					}
+					else if(isFull()){
+						jlblStatus.setText("Stalemate");
+					}
+					else{
+						turn=(turn=='X') ? 'O' : 'X';
+						jlblStatus.setText(turn + "'s turn");
+					}
+				}	
 				
 			}
 		}
