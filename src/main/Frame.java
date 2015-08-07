@@ -24,7 +24,6 @@ public class Frame extends JFrame{
 	
 	//Create a status label
 	JLabel jlblStatus= new JLabel("X's turn", SwingConstants.CENTER);
-	
 
 	
 	/**
@@ -33,8 +32,6 @@ public class Frame extends JFrame{
 	public Frame(){
 		//Panel to hold cells
 		JPanel panel=new JPanel(new GridLayout(3,3,0,0));
-		
-		
 		
 		for(int i=0; i<3; i++)
 			for(int j=0; j<3; j++)
@@ -163,7 +160,7 @@ public class Frame extends JFrame{
 		/**
 		 * 
 		 * @author Ryan
-		 *
+		 * Class to hold mouse listener which checks game status on every mouse release
 		 */
 		private class MyMouseListener extends MouseAdapter{
 			@Override
