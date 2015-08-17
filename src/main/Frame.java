@@ -47,15 +47,13 @@ public class Frame extends JFrame{
 		jlblStatus.setFont(new Font("Arial", 9, 50));
 		jlblStatus.setForeground(Color.GREEN);
 		
-		JOptionPane dialog= new JOptionPane(
-			    "Would you like to play again?",
-			    	    JOptionPane.QUESTION_MESSAGE,
-			    	    JOptionPane.YES_NO_OPTION);
+		
+		
+		
 		
 		//panel.setBorder(new LineBorder(Color.BLACK, 1));
 		
 		add(panel, BorderLayout.CENTER);
-		add(dialog);
 		add(jlblStatus, BorderLayout.NORTH);
 		
 	}
@@ -70,6 +68,13 @@ public class Frame extends JFrame{
 				if (cells[i][j].getToken()==' ')
 					return false;
 		return true;
+	}
+	
+	public void reset(){
+		for(int i=0; i<3; i++)
+			for(int j=0; j<3; j++)
+				cells[i][j].setToken(' ');
+		jlblStatus.setText(null);
 	}
 	
 	/**
@@ -169,11 +174,6 @@ public class Frame extends JFrame{
 				g2.setColor(Color.darkGray);
 				g2.drawOval(10, 10, getWidth()-20, getHeight()-20);
 			}
-			
-			if (gameOver){
-				g2.setColor(transparentWhite);
-				g2.drawRect(0,0,super.getWidth(),super.getHeight());
-			}
 		}
 	
 		/**
@@ -184,6 +184,14 @@ public class Frame extends JFrame{
 		private class MyMouseListener extends MouseAdapter{
 			@Override
 			public void mouseReleased(MouseEvent e){
+				
+				JFrame f= new Frame();
+				int playAgain;
+				
+//				if(gameOver){
+//				
+//				}
+				
 				if (!gameOver){
 					//if the cell is empty and game not over
 					if (token==' ' && turn != ' ')
@@ -194,6 +202,15 @@ public class Frame extends JFrame{
 						jlblStatus.setText(turn +" won!");
 						gameOver=true;
 						
+						playAgain= JOptionPane.showConfirmDialog(f, "Would you like to play again?" ,"TicTacToe",JOptionPane.YES_NO_OPTION);
+						
+						if(playAgain== JOptionPane.YES_OPTION){
+							reset();
+							gameOver=false;
+						}
+						else if(playAgain== JOptionPane.NO_OPTION)
+							System.exit(0);
+						
 					}
 					else if(isFull()){
 						jlblStatus.setText("Stalemate");
@@ -202,8 +219,6 @@ public class Frame extends JFrame{
 						turn=(turn=='X') ? 'O' : 'X';
 						jlblStatus.setText(turn + "'s turn");
 					}
-				} else {
-					System.out.println("Win");
 				}
 				
 			}
