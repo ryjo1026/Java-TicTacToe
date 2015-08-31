@@ -19,11 +19,21 @@ public class Frame extends JFrame{
 	//Indicates weather game is done
 	boolean gameOver= false;
 	
+	//Create variables for player point storage;
+	int xPoints= 0;
+	int oPoints= 0;
+	
 	//Create cell grid
 	private Cell[][] cells= new Cell[3][3];
 	
 	//Create a status label
 	JLabel jlblStatus= new JLabel("X's turn", SwingConstants.CENTER);
+	JLabel jlblPoints= new JLabel("Score: X-0 Points Y-0 Points");
+	
+	//Create Overlay color
+	int transparentWhiteColorValue=200;
+	Color transparentWhite= new Color(transparentWhiteColorValue,transparentWhiteColorValue,transparentWhiteColorValue,250);
+	
 
 	
 	/**
@@ -33,6 +43,7 @@ public class Frame extends JFrame{
 		//Panel to hold cells
 		JPanel panel=new JPanel(new GridLayout(3,3,0,0));
 		
+		
 		for(int i=0; i<3; i++)
 			for(int j=0; j<3; j++)
 				panel.add(cells[i][j]= new Cell());
@@ -41,10 +52,16 @@ public class Frame extends JFrame{
 		jlblStatus.setFont(new Font("Arial", 9, 50));
 		jlblStatus.setForeground(Color.GREEN);
 		
-		panel.setBorder(new LineBorder(Color.BLACK, 1));
+		jlblPoints.setPreferredSize(new Dimension(50,50));
+		jlblPoints.setFont(new Font("Arial", 9, 25));
+		
+		
+		//panel.setBorder(new LineBorder(Color.BLACK, 1));
 		
 		add(panel, BorderLayout.CENTER);
 		add(jlblStatus, BorderLayout.NORTH);
+		add(jlblPoints, BorderLayout.SOUTH);
+		
 	}
 	
 	/**
@@ -57,6 +74,17 @@ public class Frame extends JFrame{
 				if (cells[i][j].getToken()==' ')
 					return false;
 		return true;
+	}
+	
+	public void reset(int playerWon){
+		if (playerWon=='X')
+			xPoints++;
+		if (playerWon=='O')
+			oPoints++;
+		for(int i=0; i<3; i++)
+			for(int j=0; j<3; j++)
+				cells[i][j].setToken(' ');
+		jlblStatus.setText(turn+"'s Turn");
 	}
 	
 	/**
@@ -99,8 +127,7 @@ public class Frame extends JFrame{
 	 
 	       return false;
 	}
-
-
+	
 	/**
 	 * Defines a cell in the TicTacToe Game
 	 * @author Ryan
@@ -148,11 +175,13 @@ public class Frame extends JFrame{
 			
 			if (token=='X'){
 				jlblStatus.setForeground(Color.RED);
+				g2.setColor(Color.darkGray);
 				g2.drawLine(10, 10, getWidth()-10, getHeight()-10);
 				g2.drawLine(getWidth()-10, 10, 10, getHeight()-10);
 			}
 			else if(token=='O'){
 				jlblStatus.setForeground(Color.GREEN);
+				g2.setColor(Color.darkGray);
 				g2.drawOval(10, 10, getWidth()-20, getHeight()-20);
 			}
 		}
@@ -160,11 +189,19 @@ public class Frame extends JFrame{
 		/**
 		 * 
 		 * @author Ryan
-		 * Class to hold mouse listener which checks game status on every mouse release
+		 *
 		 */
 		private class MyMouseListener extends MouseAdapter{
 			@Override
 			public void mouseReleased(MouseEvent e){
+				
+				JFrame f= new Frame();
+				int playAgain;
+				
+//				if(gameOver){
+//				
+//				}
+				
 				if (!gameOver){
 					//if the cell is empty and game not over
 					if (token==' ' && turn != ' ')
@@ -174,15 +211,36 @@ public class Frame extends JFrame{
 					if(isWon(turn)){
 						jlblStatus.setText(turn +" won!");
 						gameOver=true;
+						
+						playAgain= JOptionPane.showConfirmDialog(f, "Would you like to play again?" ,"TicTacToe",JOptionPane.YES_NO_OPTION);
+						
+						if(playAgain== JOptionPane.YES_OPTION){
+							reset(turn);
+							jlblPoints.setText("Score: X-"+xPoints+" Points O-"+oPoints+" Points");
+							gameOver=false;
+						}
+						else if(playAgain== JOptionPane.NO_OPTION)
+							System.exit(0);
+						
 					}
 					else if(isFull()){
 						jlblStatus.setText("Stalemate");
+						
+						playAgain= JOptionPane.showConfirmDialog(f, "Would you like to play again?" ,"TicTacToe",JOptionPane.YES_NO_OPTION);
+						
+						if(playAgain== JOptionPane.YES_OPTION){
+							reset(turn);
+							jlblPoints.setText("Score: X-"+xPoints+" Points Y-"+oPoints+" Points");
+							gameOver=false;
+						}
+						else if(playAgain== JOptionPane.NO_OPTION)
+							System.exit(0);
 					}
 					else{
 						turn=(turn=='X') ? 'O' : 'X';
 						jlblStatus.setText(turn + "'s turn");
 					}
-				}	
+				}
 				
 			}
 		}
