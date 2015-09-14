@@ -1,12 +1,9 @@
 package main;
 
 import javax.swing.*;
-/**
- * @author Ryan
- *
- */
+
 public class TicTacToe {
-	
+
 	public static void main(String[] args) {
 		int gameMode;
 		String[] Options={"9 by 9 Play", "3 by 3 Play","Cancel"};

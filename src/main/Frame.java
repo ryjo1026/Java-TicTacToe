@@ -34,6 +34,8 @@ public class Frame extends JFrame{
 	int transparentWhiteColorValue=200;
 	Color transparentWhite= new Color(transparentWhiteColorValue,transparentWhiteColorValue,transparentWhiteColorValue,250);
 	
+
+	
 	/**
 	 * No-argument constructor
 	 */
@@ -41,16 +43,15 @@ public class Frame extends JFrame{
 		//Panel to hold cells
 		JPanel panel=new JPanel(new GridLayout(3,3,0,0));
 		
+		
 		for(int i=0; i<3; i++)
 			for(int j=0; j<3; j++)
 				panel.add(cells[i][j]= new Cell());
 		
-		//Set size, font, and text color for jlblStatus
 		jlblStatus.setPreferredSize(new Dimension(50,50));
 		jlblStatus.setFont(new Font("Arial", 9, 50));
 		jlblStatus.setForeground(Color.GREEN);
 		
-		//Set size and font for jlblStatus
 		jlblPoints.setPreferredSize(new Dimension(50,50));
 		jlblPoints.setFont(new Font("Arial", 9, 25));
 		
@@ -94,22 +95,33 @@ public class Frame extends JFrame{
 	public boolean isWon(char token){
 		// check rows
 	       for (int i = 0; i < 3; i++)
-	           if ((cells[i][0].getToken() == token) && (cells[i][1].getToken() == token) && (cells[i][2].getToken() == token)){
+	           if ((cells[i][0].getToken() == token)
+	                   && (cells[i][1].getToken() == token)
+	                   && (cells[i][2].getToken() == token))
+	           {
 	               return true;
 	           }
 	 
 	       // check columns
 	       for (int j = 0; j < 3; j++)
-	           if ((cells[0][j].getToken() == token) && (cells[1][j].getToken() == token) && (cells[2][j].getToken() == token)){
+	           if ((cells[0][j].getToken() == token)
+	               && (cells[1][j].getToken() == token)
+	               && (cells[2][j].getToken() == token))
+	           {
 	               return true;
 	           }
-	           
-	       // check diagonals
-	       if ((cells[0][0].getToken() == token) && (cells[1][1].getToken() == token) && (cells[2][2].getToken() == token)){
+	       // check diagonal
+	       if ((cells[0][0].getToken() == token)
+	               && (cells[1][1].getToken() == token)
+	               && (cells[2][2].getToken() == token))
+	           {
 	               return true;
 	           }
 	 
-	       if ((cells[0][2].getToken() == token) && (cells[1][1].getToken() == token) && (cells[2][0].getToken() == token)){
+	       if ((cells[0][2].getToken() == token)
+	               && (cells[1][1].getToken() == token)
+	               && (cells[2][0].getToken() == token))
+	           {
 	               return true;
 	           }
 	 
@@ -161,15 +173,12 @@ public class Frame extends JFrame{
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			
-			//Draws X token in cell
 			if (token=='X'){
 				jlblStatus.setForeground(Color.RED);
 				g2.setColor(Color.darkGray);
 				g2.drawLine(10, 10, getWidth()-10, getHeight()-10);
 				g2.drawLine(getWidth()-10, 10, 10, getHeight()-10);
 			}
-			
-			//Draws Y token in cell
 			else if(token=='O'){
 				jlblStatus.setForeground(Color.GREEN);
 				g2.setColor(Color.darkGray);
@@ -180,7 +189,7 @@ public class Frame extends JFrame{
 		/**
 		 * 
 		 * @author Ryan
-		 * Mouse listener for mouse released
+		 *
 		 */
 		private class MyMouseListener extends MouseAdapter{
 			@Override
