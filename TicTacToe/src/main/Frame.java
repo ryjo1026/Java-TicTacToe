@@ -198,10 +198,6 @@ public class Frame extends JFrame{
 				JFrame f= new Frame();
 				int playAgain;
 				
-//				if(gameOver){
-//				
-//				}
-				
 				if (!gameOver){
 					//if the cell is empty and game not over
 					if (token==' ' && turn != ' ')
