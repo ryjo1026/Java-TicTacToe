@@ -13,7 +13,13 @@ public class TicTacToe {
 		
 		//If 9by9 Mode Picked
 		if(gameMode==JOptionPane.YES_OPTION){
-			System.out.println("DEBUG: 9by9 Option Choosen");
+			JFrame f= new NineFrame();
+			
+			f.setTitle("TicTacToe");
+			f.setSize(600,600);
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.setLocationRelativeTo(null);
+			f.setVisible(true);
 		}
 		
 		//If 3by3Mode Picked
